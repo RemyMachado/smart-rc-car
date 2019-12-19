@@ -8,7 +8,7 @@ const int PRESS_D_PIN = 2;
 void setup() {
     Serial.begin(9600);
     while (! Serial); // Wait until Serial is ready
-    Serial.println("Hello world!");
+    Serial.println("Serial is ready.");
 }
 
 void loop() {
@@ -21,7 +21,7 @@ void loop() {
         Serial.println(joystick->GetYAxis());
         Serial.print("is pressed:");
         Serial.println(joystick->IsPressed());
-        delay(100);
+        delay(1000);
     }
 }
 

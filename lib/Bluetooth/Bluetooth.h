@@ -7,6 +7,8 @@
 #define CMD_SEPARATOR_CHAR ':'
 #define BUTTON_PRESSED_TRUE_CHAR '1'
 
+/* DESIGNED FOR HC-05 module */
+
 class Bluetooth {
     private:
         Stream &_SerialStream;

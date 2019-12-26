@@ -17,8 +17,18 @@ void ServoDirection::HalfLeft() {
     this->UpdateAngle();
 }
 
+void ServoDirection::QuarterLeft() {
+    this->_angle = 112;
+    this->UpdateAngle();
+}
+
 void ServoDirection::Front() {
     this->_angle = 90;
+    this->UpdateAngle();
+}
+
+void ServoDirection::QuarterRight() {
+    this->_angle = 68;
     this->UpdateAngle();
 }
 

@@ -16,7 +16,9 @@ class ServoDirection {
         /* ROTATION */
         void Left();
         void HalfLeft();
+        void QuarterLeft();
         void Front();
+        void QuarterRight();
         void HalfRight();
         void Right();
         void ToDegree(const int degree);

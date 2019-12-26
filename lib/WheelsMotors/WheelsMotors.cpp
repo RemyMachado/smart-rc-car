@@ -12,8 +12,8 @@ WheelsMotors::WheelsMotors(const int enA, const int enB, const int in1, const in
 }
 
 void WheelsMotors::Forward(float speedPercent) {
-    analogWrite(this->_enA, speedPercent * MAX_MOTOR_SPEED);
-    analogWrite(this->_enB, speedPercent * MAX_MOTOR_SPEED);
+    analogWrite(this->_enA, this->ComputeSpeed(speedPercent));
+    analogWrite(this->_enB, this->ComputeSpeed(speedPercent));
     digitalWrite(this->_in1, HIGH);
     digitalWrite(this->_in2, LOW);
     digitalWrite(this->_in3, LOW);
@@ -21,8 +21,8 @@ void WheelsMotors::Forward(float speedPercent) {
 }
 
 void WheelsMotors::Backward(float speedPercent) {
-    analogWrite(this->_enA, speedPercent * MAX_MOTOR_SPEED);
-    analogWrite(this->_enB, speedPercent * MAX_MOTOR_SPEED);
+    analogWrite(this->_enA, this->ComputeSpeed(speedPercent));
+    analogWrite(this->_enB, this->ComputeSpeed(speedPercent));
     digitalWrite(this->_in1, LOW);
     digitalWrite(this->_in2, HIGH);
     digitalWrite(this->_in3, HIGH);
@@ -76,4 +76,52 @@ void WheelsMotors::TurnRight() {
     digitalWrite(this->_in4, HIGH);
     delay(DELAY_HALF_TURN_MAX_SPEED_MILLISECONDS / 2);
     this->Stop();
+}
+
+void WheelsMotors::TurnHalfLeft() {
+    analogWrite(this->_enA, MAX_MOTOR_SPEED);
+    analogWrite(this->_enB, MAX_MOTOR_SPEED);
+    digitalWrite(this->_in1, HIGH);
+    digitalWrite(this->_in2, LOW);
+    digitalWrite(this->_in3, HIGH);
+    digitalWrite(this->_in4, LOW);
+    delay(DELAY_HALF_TURN_MAX_SPEED_MILLISECONDS / 4);
+    this->Stop();
+}
+
+void WheelsMotors::TurnHalfRight() {
+    analogWrite(this->_enA, MAX_MOTOR_SPEED);
+    analogWrite(this->_enB, MAX_MOTOR_SPEED);
+    digitalWrite(this->_in1, LOW);
+    digitalWrite(this->_in2, HIGH);
+    digitalWrite(this->_in3, LOW);
+    digitalWrite(this->_in4, HIGH);
+    delay(DELAY_HALF_TURN_MAX_SPEED_MILLISECONDS / 4);
+    this->Stop();
+}
+
+void WheelsMotors::TurnQuarterLeft() {
+    analogWrite(this->_enA, MAX_MOTOR_SPEED);
+    analogWrite(this->_enB, MAX_MOTOR_SPEED);
+    digitalWrite(this->_in1, HIGH);
+    digitalWrite(this->_in2, LOW);
+    digitalWrite(this->_in3, HIGH);
+    digitalWrite(this->_in4, LOW);
+    delay(DELAY_HALF_TURN_MAX_SPEED_MILLISECONDS / 8);
+    this->Stop();
+}
+
+void WheelsMotors::TurnQuarterRight() {
+    analogWrite(this->_enA, MAX_MOTOR_SPEED);
+    analogWrite(this->_enB, MAX_MOTOR_SPEED);
+    digitalWrite(this->_in1, LOW);
+    digitalWrite(this->_in2, HIGH);
+    digitalWrite(this->_in3, LOW);
+    digitalWrite(this->_in4, HIGH);
+    delay(DELAY_HALF_TURN_MAX_SPEED_MILLISECONDS / 8);
+    this->Stop();
+}
+
+int  WheelsMotors::ComputeSpeed(float speedPercent) {
+    return speedPercent * (MAX_MOTOR_SPEED - MIN_MOTOR_SPEED) + MIN_MOTOR_SPEED;
 }

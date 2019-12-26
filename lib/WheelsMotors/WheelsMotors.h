@@ -1,6 +1,7 @@
 #ifndef SMART_RC_CAR_WHEELSMOTORS_H
 #define SMART_RC_CAR_WHEELSMOTORS_H
 
+#define MIN_MOTOR_SPEED 120 // considering weight of the car
 #define MAX_MOTOR_SPEED 255
 #define DELAY_HALF_TURN_MAX_SPEED_MILLISECONDS 700
 
@@ -25,6 +26,13 @@ class WheelsMotors {
         void HalfTurnDirRight();
         void TurnLeft();
         void TurnRight();
+        void TurnHalfLeft();
+        void TurnHalfRight();
+        void TurnQuarterLeft();
+        void TurnQuarterRight();
+
+    private:
+        int ComputeSpeed(float speedPercent);
 };
 
 

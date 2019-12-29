@@ -1,2 +1,2 @@
 # smart-rc-car
-Arduino based RC car (BLUETOOTH &amp; IR)
+Arduino based RC car (AI Autopilot or BLUETOOTH &amp; IR)

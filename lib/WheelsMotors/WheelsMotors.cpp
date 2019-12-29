@@ -122,6 +122,28 @@ void WheelsMotors::TurnQuarterRight() {
     this->Stop();
 }
 
+void WheelsMotors::TurnSlightLeft() {
+    analogWrite(this->_enA, MAX_MOTOR_SPEED);
+    analogWrite(this->_enB, MAX_MOTOR_SPEED);
+    digitalWrite(this->_in1, HIGH);
+    digitalWrite(this->_in2, LOW);
+    digitalWrite(this->_in3, HIGH);
+    digitalWrite(this->_in4, LOW);
+    delay(DELAY_HALF_TURN_MAX_SPEED_MILLISECONDS / 30);
+    this->Stop();
+}
+
+void WheelsMotors::TurnSlightRight() {
+    analogWrite(this->_enA, MAX_MOTOR_SPEED);
+    analogWrite(this->_enB, MAX_MOTOR_SPEED);
+    digitalWrite(this->_in1, LOW);
+    digitalWrite(this->_in2, HIGH);
+    digitalWrite(this->_in3, LOW);
+    digitalWrite(this->_in4, HIGH);
+    delay(DELAY_HALF_TURN_MAX_SPEED_MILLISECONDS / 30);
+    this->Stop();
+}
+
 int  WheelsMotors::ComputeSpeed(float speedPercent) {
     return speedPercent * (MAX_MOTOR_SPEED - MIN_MOTOR_SPEED) + MIN_MOTOR_SPEED;
 }

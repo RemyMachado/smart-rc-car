@@ -30,6 +30,8 @@ class WheelsMotors {
         void TurnHalfRight();
         void TurnQuarterLeft();
         void TurnQuarterRight();
+        void TurnSlightLeft();
+        void TurnSlightRight();
 
     private:
         int ComputeSpeed(float speedPercent);

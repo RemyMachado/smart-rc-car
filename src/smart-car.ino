@@ -1,10 +1,12 @@
 #include <Arduino.h>
+#include "Bluetooth.h"
 #include "UltraSonic.h"
 #include "ServoDirection.h"
 #include "WheelsMotors.h"
 
 #define TRIGGER_PIN PIN_A5
 #define ECHO_PIN PIN_A4
+#define MASTER_STATE_PIN 2
 #define SERVO_PIN 3
 #define ENA 6
 #define ENB 5
@@ -14,15 +16,23 @@
 #define IN4 7
 
 #define UNBLOCK_MANEUVER_INTERVAL 50
+#define MINIMUM_DISTANCE_CENTIMETERS 20
+#define X_AXIS_MINIMUM_VALUE_TO_INTERPRET 0.1f
+#define Y_AXIS_MINIMUM_VALUE_TO_INTERPRET 0.6f
+#define AXIS_MAXIMUM_VALUE 1.0f
 
 UltraSonic *Sonar;
 ServoDirection *HeadDir;
 WheelsMotors *Wheels;
+Bluetooth *Master;
 
 long loopCount = 1;
+bool isAutoPilotMode = true;
+bool isControllerButtonReleased = true; // used to debounce the received bluetooth data
 
 void TakeBestDirection() {
     Wheels->Stop();
+
     HeadDir->Left();
     const float leftDistance = Sonar->GetDistanceCentimeters();
 
@@ -82,9 +92,10 @@ void setup() {
     Sonar = new UltraSonic(TRIGGER_PIN, ECHO_PIN);
     HeadDir = new ServoDirection(SERVO_PIN);
     Wheels = new WheelsMotors(ENA, ENB, IN1, IN2, IN3, IN4);
+    Master = new Bluetooth(Serial, MASTER_STATE_PIN);
 }
 
-void loop() {
+void AutoPilot() {
     const float distance = Sonar->GetDistanceCentimeters();
 
     /* DECISIONS TO TAKE */
@@ -93,7 +104,7 @@ void loop() {
         Wheels->Backward(0.5);
         delay(500);
         TakeBestDirection();
-    } else if (distance > 20) {
+    } else if (distance > MINIMUM_DISTANCE_CENTIMETERS) {
         Wheels->Forward(0.2);
         delay(100);
     } else {
@@ -104,3 +115,48 @@ void loop() {
     ++loopCount;
 }
 
+void RemoteControl() {
+    const float valueX = Master->GetXAxis();
+    const float valueY = Master->GetYAxis();
+
+    /* FORWARD/BACKWARD */
+    if (valueX < X_AXIS_MINIMUM_VALUE_TO_INTERPRET &&
+        valueX > -X_AXIS_MINIMUM_VALUE_TO_INTERPRET) { // Joystick is probably in neutral position
+        Wheels->Stop();
+    } else if (valueX > X_AXIS_MINIMUM_VALUE_TO_INTERPRET) {
+        Wheels->Forward(valueX);
+    } else if (valueX < -X_AXIS_MINIMUM_VALUE_TO_INTERPRET) {
+        Wheels->Backward(valueX * -1);
+    }
+
+    /* LEFT TURNS */
+    if (valueY < -Y_AXIS_MINIMUM_VALUE_TO_INTERPRET && valueY >= -AXIS_MAXIMUM_VALUE) {
+        Wheels->TurnSlightLeft();
+    }
+
+    /* RIGHT TURNS */
+    if (valueY > Y_AXIS_MINIMUM_VALUE_TO_INTERPRET && valueY <= AXIS_MAXIMUM_VALUE) {
+        Wheels->TurnSlightRight();
+    }
+}
+
+void loop() {
+    if (Master->IsDataUpdated()) { // check bluetooth reception
+        if (Master->GetPressedValue()) {
+            if (isControllerButtonReleased) {
+                isAutoPilotMode = !isAutoPilotMode;
+                isControllerButtonReleased = false;
+            }
+        } else {
+            isControllerButtonReleased = true;
+        }
+
+        if (!isAutoPilotMode) {
+            RemoteControl();
+        }
+    }
+
+    if (isAutoPilotMode) {
+        AutoPilot();
+    }
+}

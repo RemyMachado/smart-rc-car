@@ -1,6 +1,6 @@
 # smart-rc-car :car::satellite:
 _This project was handmade. No third party libraries were used._
-![elegoo-car](https://user-images.githubusercontent.com/30229752/71579556-6d799b00-2afd-11ea-85a4-85f0cb44fc04.jpg)
+![elegoo-car](https://user-images.githubusercontent.com/30229752/200054391-4df97e44-1ab0-4eb7-ad9f-a0ad7b96e68e.jpg)
 
 This Arduino based RC car handles two different modes to move:
 
@@ -10,8 +10,8 @@ This Arduino based RC car handles two different modes to move:
 
 _The joystick, when pressed, allow to toggle between autopilot and remote control mode._
 
-> Remote controller ![IMG_8006](https://user-images.githubusercontent.com/30229752/71580276-38227c80-2b00-11ea-823a-9850581aee71.jpg)
-![remote-controller](https://user-images.githubusercontent.com/30229752/71580451-01993180-2b01-11ea-8168-2cb39d8b1d1b.jpg)
+> Remote controller ![remote-controller-open](https://user-images.githubusercontent.com/30229752/200054551-08b04c74-5d56-4f15-b309-154bd687dfcf.jpg)
+![remote-controller-closed](https://user-images.githubusercontent.com/30229752/200054624-cb9b3ee6-cf35-4540-8963-4180449f47b8.jpg)
 
 
 Technical specifications:
